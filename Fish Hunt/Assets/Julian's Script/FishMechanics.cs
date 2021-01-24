@@ -7,21 +7,30 @@ public class FishMechanics : MonoBehaviour
     private Rigidbody2D physics;
     private Vector2 movement;
     private int constantSpeed = 1;
+    private bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
         physics = GetComponent<Rigidbody2D>();
-        movement = new Vector2(Random.Range(-500, 500), Random.Range(-500, 500));
+        movement = new Vector2(Random.Range(-100, 100), Random.Range(0, 200));
         physics.AddForce(movement);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 newVelocity = SetVelocity(physics.velocity);
-        physics.velocity = newVelocity;
-        FaceDirection();
+        if (isDead)
+        {
+            physics.velocity = Vector2.zero;
+            physics.AddForce(new Vector2(0f, -40f));
+        }
+        else
+        {
+            Vector2 newVelocity = SetVelocity(physics.velocity);
+            physics.velocity = newVelocity;
+            FaceDirection();
+        }
     }
 
     void FaceDirection()
@@ -57,7 +66,26 @@ public class FishMechanics : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        physics.AddForce(new Vector2(Random.Range(-500f, 500f), Random.Range(-500f, 500f)));
-        physics.velocity = constantSpeed * (physics.velocity.normalized);
+        if (isDead)
+        {
+
+        }
+        else
+        {
+            if (physics == null)
+            {
+                return;
+            }
+            physics.AddForce(new Vector2(Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
+            physics.velocity = constantSpeed * (physics.velocity.normalized);
+        }
+    }
+
+    void FishDied()
+    {
+        gameObject.layer = 9;
+        isDead = true;
+        gameObject.tag = "DeadFish";
+        transform.localEulerAngles = new Vector3(0,0,-90);
     }
 }
