@@ -29,27 +29,19 @@ public class GameOverScreen : MonoBehaviour
         PhotonNetwork.LoadLevel(0);
     }
 
-    private bool GetDidWin() {
-        return (PhotonNetwork.LocalPlayer.CustomProperties["DidWin"] != null) ? (bool) PhotonNetwork.LocalPlayer.CustomProperties["DidWin"] : false;
-    }
-
-    private bool GetDidTie() {
-        return (PhotonNetwork.LocalPlayer.CustomProperties["DidTie"] != null) ? (bool)PhotonNetwork.LocalPlayer.CustomProperties["DidTie"] : false;
-    }
-
     private Photon.Realtime.Player GetNonLocalPlayer() {
         return PhotonNetwork.PlayerListOthers[0];
     }
 
     private bool DidLocalWin() {
-        if (PhotonNetwork.LocalPlayer.GetScore() > GetNonLocalPlayer().GetScore()) {
-            return true;
-        }
-        if (PhotonNetwork.LocalPlayer.GetScore() > GetNonLocalPlayer().GetScore()) {
+        if (PhotonNetwork.LocalPlayer.GetScore() == GetNonLocalPlayer().GetScore()) {
+            didTie = true;
             return false;
         }
+        else if (PhotonNetwork.LocalPlayer.GetScore() > GetNonLocalPlayer().GetScore()) {
+            return true;
+        }
         else {
-            didTie = true;
             return false;
         }
     }

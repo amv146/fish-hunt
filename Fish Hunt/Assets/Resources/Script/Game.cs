@@ -9,7 +9,6 @@ using System;
 public class Game : MonoBehaviourPunCallbacks
 {
     public static Game instance;
-
     public static Game Instance
     {
         get
@@ -17,21 +16,19 @@ public class Game : MonoBehaviourPunCallbacks
             return instance;
         }
     }
+    public Timer timer;
+    public AudioClip GunshotSFX;
+    public AudioClip FishDeathSFX;
 
-    private List<Scoreboard> Scoreboards;
-    private List<Crosshair> Crosshairs;
-    private List<Shotsboard> Shotsboards;
     private PhotonView myPhotonView;
     private List<Player> players;
-    public Timer timer;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Awake() {
+        audioSource = GameObject.FindGameObjectWithTag("Sounds").GetComponent<AudioSource>();
         instance = this;
         myPhotonView = GetComponent<PhotonView>();
-        Crosshairs = new List<Crosshair>();
-        Scoreboards = new List<Scoreboard>();
-        Shotsboards = new List<Shotsboard>();
         players = new List<Player>();
     }
 
@@ -52,9 +49,11 @@ public class Game : MonoBehaviourPunCallbacks
 
     private void HandleInputs() {
         if (Input.GetMouseButtonDown(0) && GetLocalPlayer().GetBulletsLeft() > 0) {
+            photonView.RPC("RPC_PlayGunshotSFX", RpcTarget.All, null);
             if (Game.Instance.CollidedwithGoldenFish(GetLocalPlayer().GetCrosshair().gameObject, out GameObject goldenFish)) {
                 if (!goldenFish.GetComponent<FishMechanics>().isDead) {
-                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.MasterClient, goldenFish.GetPhotonView().ViewID);
+                    photonView.RPC("RPC_PlayFishDeathSFX", RpcTarget.All, null);
+                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.All, goldenFish.GetPhotonView().ViewID);
                     AwardPoints(GetLocalPlayer(), true);
                     GetLocalPlayer().AddToCombo();
                     GetLocalPlayer().ResetBullets();
@@ -62,7 +61,8 @@ public class Game : MonoBehaviourPunCallbacks
             }
             else if (Game.Instance.CollidedwithFish(GetLocalPlayer().GetCrosshair().gameObject, out GameObject fish)) {
                 if (!fish.GetComponent<FishMechanics>().isDead) {
-                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.MasterClient, fish.GetPhotonView().ViewID);
+                    photonView.RPC("RPC_PlayFishDeathSFX", RpcTarget.All, null);
+                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.All, fish.GetPhotonView().ViewID);
                     AwardPoints(GetLocalPlayer(), false);
                     GetLocalPlayer().AddToCombo();
                     GetLocalPlayer().ResetBullets();
@@ -78,7 +78,7 @@ public class Game : MonoBehaviourPunCallbacks
     }
 
     IEnumerator RefillBullets(Player player) {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3.5f);
 
         player.ResetBullets();
     }
@@ -180,8 +180,13 @@ public class Game : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void RPC_DestroyFish(int viewID) {
-        PhotonNetwork.Destroy(PhotonView.Find(viewID).gameObject);
+    void RPC_PlayGunshotSFX() {
+        audioSource.PlayOneShot(GunshotSFX);
+    }
+
+    [PunRPC]
+    void RPC_PlayFishDeathSFX() {
+        audioSource.PlayOneShot(FishDeathSFX);
     }
 
     [PunRPC]

@@ -6,7 +6,7 @@ using Photon.Pun;
 public class CatMechanics : MonoBehaviourPunCallbacks
 {
     private GameObject[] deadFish;
-    public float speed = 2.0f;
+    public float speed = 200.0f;
     public float yAxisLimit = -2.0f;
     private PhotonView myPhotonView;
     // Start is called before the first frame update

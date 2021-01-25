@@ -12,6 +12,7 @@ TagManager:
   - GoldenFish
   - Shotsboard
   - DeadFish
+  - Sounds
   layers:
   - Default
   - TransparentFX
