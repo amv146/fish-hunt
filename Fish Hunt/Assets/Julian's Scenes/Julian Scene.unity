@@ -1716,7 +1716,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1259645380}
-  - component: {fileID: 1259645379}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1724,20 +1723,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1259645379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1259645378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33fede31a0c5fac4ba779ad3a680dadc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialTime: 300
-  timeText: {fileID: 1105741034}
 --- !u!4 &1259645380
 Transform:
   m_ObjectHideFlags: 0
@@ -2264,17 +2249,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2043893968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae23db9cdbbfd28439dd899e64f7adf6, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bcdf45dac4bd46e98f19e681f1295a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fish: {fileID: 6205223281701198144, guid: 8e06adb28b8c4c44093776066888ef41, type: 3}
   goldenFish: {fileID: 5313625302924866721, guid: 01ff3ce8a553cd2488169292efd120ea,
     type: 3}
   maxTime: 3
-  minTime: 0
-  xMin: -7
-  xMax: 7
-  yFixed: -3.5
+  minTime: 1
+  xMin: -10
+  xMax: 10
+  yFixed: -4
 --- !u!4 &2043893970
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8bcdf45dac4bd46e98f19e681f1295a3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - fish: {fileID: 6205223281701198144, guid: 8e06adb28b8c4c44093776066888ef41, type: 3}
+  - goldenFish: {fileID: 5313625302924866721, guid: 01ff3ce8a553cd2488169292efd120ea,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
