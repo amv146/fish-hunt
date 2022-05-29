@@ -34,6 +34,7 @@ public class FishSpawn : MonoBehaviourPunCallbacks
         {
             Spawn();
             SetRandomTime();
+            spawnTime = 111111111111;
             time = 0;
         } 
     }

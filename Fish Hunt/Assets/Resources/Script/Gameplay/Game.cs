@@ -6,6 +6,7 @@ using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using System;
 
+
 public class Game : MonoBehaviourPunCallbacks
 {
     public static Game instance;
@@ -26,6 +27,8 @@ public class Game : MonoBehaviourPunCallbacks
 
     // Start is called before the first frame update
     void Awake() {
+        PhotonNetwork.AddCallbackTarget(this);
+
         audioSource = GameObject.FindGameObjectWithTag("Sounds").GetComponent<AudioSource>();
         instance = this;
         myPhotonView = GetComponent<PhotonView>();
@@ -33,55 +36,21 @@ public class Game : MonoBehaviourPunCallbacks
     }
 
     private void Update() {
-        HandleInputs();
         if (timer.IsGameOver()) {
             HandleWinner();
         }
-    }
-
-    public override void OnEnable() {
-        PhotonNetwork.AddCallbackTarget(this);
     }
 
     public override void OnDisable() {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
-    private void HandleInputs() {
-        if (Input.GetMouseButtonDown(0) && GetLocalPlayer().GetBulletsLeft() > 0) {
-            photonView.RPC("RPC_PlayGunshotSFX", RpcTarget.All, null);
-            if (Game.Instance.CollidedwithGoldenFish(GetLocalPlayer().GetCrosshair().gameObject, out GameObject goldenFish)) {
-                if (!goldenFish.GetComponent<FishMechanics>().isDead) {
-                    photonView.RPC("RPC_PlayFishDeathSFX", RpcTarget.All, null);
-                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.All, goldenFish.GetPhotonView().ViewID);
-                    AwardPoints(GetLocalPlayer(), true);
-                    GetLocalPlayer().AddToCombo();
-                    GetLocalPlayer().ResetBullets();
-                }
-            }
-            else if (Game.Instance.CollidedwithFish(GetLocalPlayer().GetCrosshair().gameObject, out GameObject fish)) {
-                if (!fish.GetComponent<FishMechanics>().isDead) {
-                    photonView.RPC("RPC_PlayFishDeathSFX", RpcTarget.All, null);
-                    photonView.RPC("RPC_HandleFishDeath", RpcTarget.All, fish.GetPhotonView().ViewID);
-                    AwardPoints(GetLocalPlayer(), false);
-                    GetLocalPlayer().AddToCombo();
-                    GetLocalPlayer().ResetBullets();
-                }
-            }
-            else {
-                GetLocalPlayer().DecreaseBullets();
-                GetLocalPlayer().ResetCombo();
-                StopAllCoroutines();
-                StartCoroutine(RefillBullets(GetLocalPlayer()));
-            }
-        }
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer) {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LeaveLobby();
+        PhotonNetwork.LoadLevel(0);
     }
 
-    IEnumerator RefillBullets(Player player) {
-        yield return new WaitForSeconds(3.5f);
-
-        player.ResetBullets();
-    }
 
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) {
         foreach (Player player in players) {
@@ -97,47 +66,35 @@ public class Game : MonoBehaviourPunCallbacks
         player.UpdateScoreboard();
     }
 
-    public GameObject[] GetFish() {
-        return GameObject.FindGameObjectsWithTag("Fish");
+    private void OnShot() {
+        photonView.RPC("RPC_PlayGunshotSFX", RpcTarget.All, null);
     }
 
-    public GameObject[] GetGoldenFish() {
-        return GameObject.FindGameObjectsWithTag("GoldenFish");
+    private void OnFishShot(Fish fish) {
+        photonView.RPC("RPC_PlayFishDeathSFX", RpcTarget.All, null);
+        fish.Kill();
     }
 
-    public bool CollidedwithFish(GameObject crosshair, out GameObject fish) {
-        foreach (GameObject tempFish in GetFish()) {
-            if (tempFish.GetComponent<BoxCollider2D>().bounds.Contains(crosshair.transform.position)) {
-                fish = tempFish;
-                return true;
-            }
-        }
-        fish = null;
-        return false;
-    }
+    
 
-    public bool CollidedwithGoldenFish(GameObject crosshair, out GameObject goldenFish) {
-        foreach (GameObject tempGoldenFish in GetGoldenFish()) {
-            if (tempGoldenFish.GetComponent<BoxCollider2D>().bounds.Contains(crosshair.transform.position)) {
-                goldenFish = tempGoldenFish;
-                return true;
-            }
-        }
-        goldenFish = null;
-        return false;
-    }
-
-    public void AddPlayer(Player player) {
+    public void AddPlayer(Player player, string uid) {
         players.Add(player);
-    }
-
-    public Player GetLocalPlayer() {
-        foreach (Player player in players) {
-            if (player.IsLocal()) {
-                return player;
+        
+        foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) {
+            if (photonPlayer.UserId == (string) uid) {
+                player.player = photonPlayer;
             }
         }
-        return null;
+        if (player.player == null) {
+            foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) {
+                if (photonPlayer.UserId == null) {
+                    player.player = photonPlayer;
+                }
+            }
+        }
+        
+        player.OnFishShot += OnFishShot;
+        player.OnShot += OnShot;
     }
 
     public void HandleWinner() {
@@ -157,27 +114,7 @@ public class Game : MonoBehaviourPunCallbacks
         }
     }
 
-    public void AwardPoints(Player player, bool golden) {
-        int multiplier = 1;
-        if (golden) {
-            multiplier = 10;
-        }
-
-        int score = player.GetComboScore();
-
-        if (player.GetBulletsLeft() == 3) {
-            score += (500 * multiplier);
-        }
-        else if (player.GetBulletsLeft() == 2) {
-            score += (400 * multiplier);
-        }
-        else {
-            score += (300 * multiplier);
-        }
-
-        player.AddScore(score);
-        player.UpdateScoreText();
-    }
+    
 
     [PunRPC]
     void RPC_PlayGunshotSFX() {
@@ -191,6 +128,6 @@ public class Game : MonoBehaviourPunCallbacks
 
     [PunRPC]
     void RPC_HandleFishDeath(int viewID) {
-        PhotonNetwork.GetPhotonView(viewID).GetComponent<FishMechanics>().FishDied();
+        PhotonNetwork.GetPhotonView(viewID).GetComponent<Fish>().Kill();
     }
 }

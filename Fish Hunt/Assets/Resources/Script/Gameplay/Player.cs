@@ -1,11 +1,13 @@
-﻿ using UnityEngine;
+﻿
+ using UnityEngine;
 using System.Collections;
 using System.ComponentModel;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Collections.Generic;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+ using UnityEngine.InputSystem;
+ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 /**
 public enum Player {
@@ -16,6 +18,10 @@ public enum Player {
 };
 */
 
+public delegate void OnFishShot(Fish fish);
+
+ public delegate void OnShot();
+ 
 public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
     public Crosshair crosshair;
     public Shotsboard shotsboard;
@@ -24,32 +30,66 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
     public Photon.Realtime.Player player;
     private const int MAX_BULLETS = 3;
     private int combo = 0;
+    private PlayerMap playerMap;
+    private Fish touchingFish = null;
+    public OnFishShot OnFishShot;
+    public OnShot OnShot;
+
+    private Dictionary<int, int> comboScores = new Dictionary<int, int> {
+        {0, 0},
+        {1, 0},
+        {2, 100},
+        {3, 200},
+        {4, 300},
+        {5, 500}
+    };
 
     public void OnPhotonInstantiate(PhotonMessageInfo info) {
-
+        playerMap = new PlayerMap();
+        playerMap.Player.Shoot.Enable();
+        playerMap.Player.Shoot.performed += HandleShoot;
         object[] data = info.photonView.InstantiationData;
 
         crosshair = PhotonNetwork.GetPhotonView((int)data[0]).gameObject.GetComponent<Crosshair>();
         scoreboard = PhotonNetwork.GetPhotonView((int)data[1]).gameObject.GetComponent<Scoreboard>();
         shotsboard = PhotonNetwork.GetPhotonView((int)data[2]).gameObject.GetComponent<Shotsboard>();
         score = PhotonNetwork.GetPhotonView((int) data[3]).gameObject.GetComponent<Score>();
+        
 
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-            if (player.UserId == (string) data[4]) {
-                this.player = player;
-            }
-        }
-        if (this.player == null) {
-            foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList) {
-                if (player.UserId == null) {
-                    this.player = player;
-                }
-            }
-        }
+        crosshair.OnFishTouch += SetTouchingFish;
 
+        Game.Instance.AddPlayer(this, (string) data[4]);
         ResetBullets();
-        Game.Instance.AddPlayer(this);
+
     }
+
+    public override void OnDisable() {
+        playerMap.Player.Shoot.performed -= HandleShoot;
+        playerMap.Player.Shoot.Disable();
+    }
+
+    public void HandleShoot(InputAction.CallbackContext callbackContext) {
+        if (photonView.IsMine && GetBulletsLeft() > 0) {
+            OnShot?.Invoke();
+            if (touchingFish != null) {
+                AwardPoints(touchingFish.isGolden);
+                AddToCombo();
+                ResetBullets();
+                OnFishShot(touchingFish);
+                touchingFish = null;
+            }
+            else {
+                DecreaseBullets();
+                ResetCombo();
+                StopAllCoroutines();
+                StartCoroutine(RefillBullets());
+            }
+        }
+    }
+    
+    /**
+     * BEGIN GETTERS
+     */
 
     public Shotsboard GetShotsboard() {
         return shotsboard;
@@ -80,7 +120,40 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
     public int GetScore() {
         return player.GetScore();
     }
+    
+    public int GetComboScore() {
+        if (combo > 5) {
+            return comboScores[5];
+        }
+        return comboScores[combo];
+    }
 
+    /**
+     * END GETTERS
+     */
+
+
+
+    /**
+     * BEGIN SETTERS
+     */
+
+    public void SetTouchingFish(Fish fish) {
+        touchingFish = fish;
+    }
+    
+    public void SetBulletsTo(int bullets) {
+        Hashtable playerHashtable = new Hashtable();
+        playerHashtable.Add("Bullets", bullets);
+        player.SetCustomProperties(playerHashtable);
+    }
+
+    public void SetLastScoreAddedTo(int score) {
+        Hashtable playerHashtable = new Hashtable();
+        playerHashtable.Add("LastScore", score);
+        player.SetCustomProperties(playerHashtable);
+    }
+    
     public void AddToCombo() {
         combo++;
     }
@@ -89,24 +162,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
         combo = 0;
     }
 
-    public int GetComboScore() {
-        if (combo <= 1) {
-            return 0;
-        }
-        else if (combo == 2) {
-            return 100;
-        }
-        else if (combo == 3) {
-            return 200;
-        }
-        else if (combo == 4) {
-            return 300;
-        }
-        else if (combo >= 5) {
-            return 500;
-        }
-        return 0;
-    }
+    
 
     public bool IsLocal() {
         return PhotonNetwork.LocalPlayer.UserId.Equals(player.UserId);
@@ -127,17 +183,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
         SetBulletsTo(GetBulletsLeft() - 1);
     }
 
-    public void SetBulletsTo(int bullets) {
-        Hashtable playerHashtable = new Hashtable();
-        playerHashtable.Add("Bullets", bullets);
-        player.SetCustomProperties(playerHashtable);
-    }
-
-    public void SetLastScoreAddedTo(int score) {
-        Hashtable playerHashtable = new Hashtable();
-        playerHashtable.Add("LastScore", score);
-        player.SetCustomProperties(playerHashtable);
-    }
+    
 
     public void UpdateShotsboard() {
         shotsboard.UpdateBullets(GetBulletsLeft());
@@ -174,5 +220,33 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback{
         player.SetCustomProperties(preferences);
 
         PhotonNetwork.LoadLevel(2);
+    }
+    
+    IEnumerator RefillBullets() {
+        yield return new WaitForSeconds(3.5f);
+
+        ResetBullets();
+    }
+    
+    public void AwardPoints(bool golden) {
+        int multiplier = 1;
+        if (golden) {
+            multiplier = 10;
+        }
+
+        int score = GetComboScore();
+
+        if (GetBulletsLeft() == 3) {
+            score += (500 * multiplier);
+        }
+        else if (GetBulletsLeft() == 2) {
+            score += (400 * multiplier);
+        }
+        else {
+            score += (300 * multiplier);
+        }
+
+        AddScore(score);
+        UpdateScoreText();
     }
 }

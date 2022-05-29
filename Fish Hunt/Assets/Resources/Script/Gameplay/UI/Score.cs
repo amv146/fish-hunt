@@ -10,8 +10,9 @@ public class Score : MonoBehaviourPunCallbacks {
     private Vector3 p2Position;
     private bool isMine;
     private Text text;
+    private Color textColor;
 
-    void Start() {
+    void Awake() {
         rectTransform = GetComponent<RectTransform>();
         myPhotonView = GetComponent<PhotonView>();
         isMine = myPhotonView.IsMine;
@@ -20,6 +21,8 @@ public class Score : MonoBehaviourPunCallbacks {
             SetToP2();   
         }
         this.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false);
+        textColor = text.color;
+        text.color = new Color(textColor.r, textColor.g, textColor.b, 0);
     }
 
     // Update is called once per frame

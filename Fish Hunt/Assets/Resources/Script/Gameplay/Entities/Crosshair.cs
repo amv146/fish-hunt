@@ -4,15 +4,21 @@ using UnityEngine;
 using System;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using UnityEngine.InputSystem;
+
+public delegate void OnFishTouch(Fish fish);
 
 public class Crosshair : MonoBehaviourPunCallbacks
 {
     private SpriteRenderer crosshairRenderer;
     private PhotonView myPhotonView;
     public Sprite OpponentCrosshair;
+    public OnFishTouch OnFishTouch;
+    private Camera mainCamera;
 
     public override void OnEnable() {
         PhotonNetwork.AddCallbackTarget(this);
+        this.mainCamera = Camera.main;
     }
 
     public override void OnDisable() {
@@ -32,27 +38,44 @@ public class Crosshair : MonoBehaviourPunCallbacks
 
     private void HandleInputs() {
         if (myPhotonView.IsMine) {
-            transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 10);
             ConstrainPosition();
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (!photonView.IsMine) {
+            return;
+        }
+        if (col.TryGetComponent<Fish>(out Fish fish)) {
+            print(fish);
+            if (!fish.isDead) {
+                OnFishTouch?.Invoke(fish);
+                return;
+            }
+        }
+        OnFishTouch?.Invoke(null);
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        OnFishTouch?.Invoke(null);
+    }
+
     private void ConstrainPosition() {
-        Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
-        if (Input.mousePosition.x > Screen.width) {
-            newPosition.x = Screen.width;
+        Vector2 pos = Mouse.current.position.ReadValue();
+        if (pos.x > Screen.width) {
+            pos.x = Screen.width;
         }
-        if (Input.mousePosition.x < 0) {
-            newPosition.x = 0;
+        if (pos.x < 0) {
+            pos.x = 0;
         }
-        if (Input.mousePosition.y > Screen.height) {
-            newPosition.y = Screen.height;
+        if (pos.y > Screen.height) {
+            pos.y = Screen.height;
         }
-        if (Input.mousePosition.y < 0) {
-            newPosition.y = 0;
+        if (pos.y < 0) {
+            pos.y = 0;
         }
 
-        transform.position = Camera.main.ScreenToWorldPoint(newPosition);
+        transform.position = this.mainCamera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 10));
     }
     
     
