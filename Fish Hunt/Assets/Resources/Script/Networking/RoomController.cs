@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomController : MonoBehaviourPunCallbacks
@@ -82,8 +83,9 @@ public class RoomController : MonoBehaviourPunCallbacks
 
         }
     }
-
     
+
+
     private void StartGame() {
         startingGame = true;
         Debug.Log("Starting Game");

@@ -26,24 +26,45 @@ public partial class MainMenu : MonoBehaviourPunCallbacks
     private readonly Color BUTTON_COLOR = new Color(50 / 256.0f, 50 / 256.0f, 50 / 256.0f);
     private readonly Color DISABLED_COLOR = new Color(109 / 256.0f, 107 / 256.0f, 107 / 256.0f);
 
-    private void Awake() {
+    public override void OnEnable() {
+        base.OnEnable();
         instance = this;
         
-        MainMenu.Instance.PlayButton.gameObject.SetActive(true);
-        MainMenu.Instance.CancelButton.gameObject.SetActive(false);
-
-        this.PlayButton.interactable = false;
-        print(DISABLED_COLOR);
-        this.PlayButtonText.color = DISABLED_COLOR;
         
+        this.SetCancelButton(false);
+
+        if (!PhotonNetwork.IsConnectedAndReady) {
+            SetPlayButtonInteractable(false);
+        }
+    }
+
+    public override void OnDisable() {
+        print("OnDisable");
+        this.SetCancelButton(false);
+        
+        SetPlayButtonInteractable(true);
+        WaitingText.text = "";
+    }
+    
+    public override void OnLeftRoom() {
+        WaitingText.text = "";
     }
 
     public override void OnConnectedToMaster() {
-        PhotonNetwork.AutomaticallySyncScene = true;
-        PlayButton.interactable = true;
-        print(BUTTON_COLOR);
-        this.PlayButtonText.color = BUTTON_COLOR;
+        SetPlayButtonInteractable(true);
     }
+
+    private void SetCancelButton(bool active) {
+        this.PlayButton.gameObject.SetActive(!active);
+        this.CancelButton.gameObject.SetActive(active);
+            
+    }
+
+    public void SetPlayButtonInteractable(bool interactable) {
+        this.PlayButton.interactable = interactable;
+        this.PlayButtonText.color = interactable ? BUTTON_COLOR : DISABLED_COLOR;
+    }
+    
 
     public void SetWaitingText() {
         WaitingText.text = "WAITING FOR ANOTHER PLAYER...";
