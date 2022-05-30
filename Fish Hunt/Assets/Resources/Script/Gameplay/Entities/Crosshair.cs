@@ -12,16 +12,19 @@ public class Crosshair : MonoBehaviourPunCallbacks
 {
     private SpriteRenderer crosshairRenderer;
     private PhotonView myPhotonView;
+    public RuntimeAnimatorController opponentAnimationController;
     public Sprite OpponentCrosshair;
     public OnFishTouch OnFishTouch;
     private Camera mainCamera;
 
-    public override void OnEnable() {
+    public override void OnEnable()
+    {
         PhotonNetwork.AddCallbackTarget(this);
         this.mainCamera = Camera.main;
     }
 
-    public override void OnDisable() {
+    public override void OnDisable()
+    {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
@@ -30,25 +33,36 @@ public class Crosshair : MonoBehaviourPunCallbacks
     {
         crosshairRenderer = GetComponent<SpriteRenderer>();
         myPhotonView = GetComponent<PhotonView>();
-        if (!myPhotonView.IsMine) {
+        if (!myPhotonView.IsMine)
+        {
+            Debug.Log("Crosshair Changed");
+            crosshairRenderer.sprite = OpponentCrosshair;
+            GetComponent<Animator>().runtimeAnimatorController = opponentAnimationController;
             crosshairRenderer.sprite = OpponentCrosshair;
         }
         InvokeRepeating("HandleInputs", 0, 0.000015f);
     }
 
-    private void HandleInputs() {
-        if (myPhotonView.IsMine) {
+    private void HandleInputs()
+    {
+        if (myPhotonView.IsMine)
+        {
             ConstrainPosition();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D col) {
-        if (!photonView.IsMine) {
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (!photonView.IsMine)
+        {
+            crosshairRenderer.sprite = OpponentCrosshair;
             return;
         }
-        if (col.TryGetComponent<Fish>(out Fish fish)) {
+        if (col.TryGetComponent<Fish>(out Fish fish))
+        {
             print(fish);
-            if (!fish.isDead) {
+            if (!fish.isDead)
+            {
                 OnFishTouch?.Invoke(fish);
                 return;
             }
@@ -56,27 +70,33 @@ public class Crosshair : MonoBehaviourPunCallbacks
         OnFishTouch?.Invoke(null);
     }
 
-    private void OnTriggerExit2D(Collider2D other) {
+    private void OnTriggerExit2D(Collider2D other)
+    {
         OnFishTouch?.Invoke(null);
     }
 
-    private void ConstrainPosition() {
+    private void ConstrainPosition()
+    {
         Vector2 pos = Mouse.current.position.ReadValue();
-        if (pos.x > Screen.width) {
+        if (pos.x > Screen.width)
+        {
             pos.x = Screen.width;
         }
-        if (pos.x < 0) {
+        if (pos.x < 0)
+        {
             pos.x = 0;
         }
-        if (pos.y > Screen.height) {
+        if (pos.y > Screen.height)
+        {
             pos.y = Screen.height;
         }
-        if (pos.y < 0) {
+        if (pos.y < 0)
+        {
             pos.y = 0;
         }
 
         transform.position = this.mainCamera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 10));
     }
-    
-    
+
+
 }
