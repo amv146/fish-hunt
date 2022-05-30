@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -12,10 +13,16 @@ public class GameOverScreen : MonoBehaviour
     private bool didTie = false;
 
     // Start is called before the first frame update
+
+    private void Awake() {
+        print(PhotonNetwork.InRoom + " " + PhotonNetwork.InLobby);
+        SetWinText();
+    }
+
     void Start()
     {
-        SetWinText();
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LeaveLobby();
     }
 
     // Update is called once per frame

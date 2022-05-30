@@ -44,10 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a7025a366684824ba9fa15ca0d5e7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshair: {fileID: 0}
-  shotsboard: {fileID: 0}
-  scoreboard: {fileID: 0}
-  score: {fileID: 0}
 --- !u!114 &1317224566757382031
 MonoBehaviour:
   m_ObjectHideFlags: 0

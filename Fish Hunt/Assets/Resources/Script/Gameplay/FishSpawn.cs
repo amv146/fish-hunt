@@ -7,17 +7,18 @@ using System.IO;
 
 public class FishSpawn : MonoBehaviourPunCallbacks
 {
-    public GameObject fish;
-    public GameObject goldenFish;
+    private float time;
+    private float spawnTime;
+    private float spawnPoint;
+    private int goldenChance;
+    
+    
     public float maxTime = 3;
     public float minTime = 1;
     public float xMin = -10;
     public float xMax = 10;
     public float yFixed = -4;
-    private float time;
-    private float spawnTime;
-    private float spawnPoint;
-    private int goldenChance;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,6 @@ public class FishSpawn : MonoBehaviourPunCallbacks
         {
             Spawn();
             SetRandomTime();
-            spawnTime = 111111111111;
             time = 0;
         } 
     }

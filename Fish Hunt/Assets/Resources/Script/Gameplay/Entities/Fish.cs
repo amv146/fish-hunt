@@ -3,34 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Fish : MonoBehaviourPunCallbacks
-{
+public class Fish : MonoBehaviourPunCallbacks {
+    private static readonly float GOLD_SPEED = 1.5f;
     private Rigidbody2D rigidBody;
-    private Vector2 movement;
+    private BoxCollider2D collider;
+    private Vector2 velocity;
     private int constantSpeed = 1;
     public bool isGolden = false;
     public bool isDead = false;
 
+    private Vector2 minVelocity = new Vector2(-5, -5);
+    private Vector2 maxVelocity = new Vector2(5, 5);
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        collider = GetComponent<BoxCollider2D>();
         if (isGolden) {
-            constantSpeed = 3;
-            movement = new Vector2(Random.Range(-300, 300), Random.Range(0, 400));
+            constantSpeed = 2;
+            rigidBody.velocity = new Vector2(Random.Range(-10, 10), Random.Range(-10, 10));
         }
-        movement = new Vector2(Random.Range(-100, 100), Random.Range(0, 200));
-        rigidBody.AddForce(movement);
+        rigidBody.velocity = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
+        FaceDirection();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isDead) {
-            Vector2 newVelocity = SetVelocity(rigidBody.velocity);
-            rigidBody.velocity = newVelocity;
-            FaceDirection();
-        }
+        // if (!isDead) {
+        //     Vector2 newVelocity = SetVelocity(rigidBody.velocity);
+        //     rigidBody.velocity = newVelocity;
+        //     FaceDirection();
+        // }
     }
 
     void FaceDirection()
@@ -43,42 +49,32 @@ public class Fish : MonoBehaviourPunCallbacks
         }
     }
 
-    private Vector2 SetVelocity(Vector2 fishVelocity)
-    {
-        print("Velocity set");
-        Vector2 adjustedVelocity = fishVelocity;
-        ConstrainValue(adjustedVelocity.x);
-        ConstrainValue(adjustedVelocity.y);
-        return adjustedVelocity;
+    private void ChangeVelocity() {
+        Vector2 newVelocity = GetRandomVelocity() * (isGolden ? GOLD_SPEED : 1);
+        FaceDirection();
     }
+    
 
-    private float ConstrainValue(float value)
-    {
-        if (value >= 0)
-        {
-            value = 6;
-        }
-        else if (value < 0)
-        {
-            value = -6;
-        }
-        return value;
-    }
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!PhotonNetwork.IsMasterClient) {
+            return;
+        }
         if (isDead) {
+            rigidBody.velocity = Vector2.zero;
             return;
         }
-        if (rigidBody == null) {
-            return;
-        }
-        rigidBody.AddForce(new Vector2(Random.Range(-200f, 200f), Random.Range(-200f, 200f)));
-        rigidBody.velocity = constantSpeed * (rigidBody.velocity.normalized);
+
+        ChangeVelocity();
+    }
+    
+    private Vector2 GetRandomVelocity() {
+        return new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
     }
 
     public void Kill() {
-        photonView.RPC("HandleDeath", RpcTarget.AllBuffered);
+        photonView.RPC("HandleDeath", RpcTarget.All);
     } 
     
     [PunRPC]
@@ -87,6 +83,7 @@ public class Fish : MonoBehaviourPunCallbacks
         GetComponent<Animator>().enabled = false;
         rigidBody.velocity = Vector2.down * 5;
         transform.localEulerAngles = new Vector3(0, 0, -90);
-        GetComponent<BoxCollider2D>().sharedMaterial = null;
+        gameObject.layer = LayerMask.NameToLayer("DeadFish");
+        collider.sharedMaterial = null;
     }
 }

@@ -38,7 +38,7 @@ public class GameSetupController : MonoBehaviour
         Photon.Realtime.Player photonPlayer = PhotonNetwork.LocalPlayer;
         object[] viewIDs = new object[]
         {
-            crosshair.GetPhotonView().ViewID, scoreboard.GetPhotonView().ViewID, shotsboard.GetPhotonView().ViewID, score.GetPhotonView().ViewID, photonPlayer.UserId
+            crosshair.GetPhotonView().ViewID, scoreboard.GetPhotonView().ViewID, shotsboard.GetPhotonView().ViewID, score.GetPhotonView().ViewID, photonPlayer.ActorNumber
         };
 
         PhotonNetwork.Instantiate(Path.Combine("Prefabs", "UI", "Player"), Vector3.zero, Quaternion.identity, 0, viewIDs);

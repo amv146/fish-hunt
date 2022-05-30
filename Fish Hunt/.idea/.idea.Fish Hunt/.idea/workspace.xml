@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="" />
+    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish Hunt/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish Hunt/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/FlyingFish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/FlyingFish.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/GoldenFlyingFish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/GoldenFlyingFish.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/UI/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Scenes/GameOver.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Scenes/GameOver.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Fish.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Fish.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/FishSpawn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/FishSpawn.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/Game.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/GameOverScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/GameOverScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/GameOverScreen.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/GameOverScreen.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/GameSetupController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/GameSetupController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/GameSetupController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/GameSetupController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Timer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Timer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Physics2DSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,9 +41,7 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -74,12 +97,25 @@
       <option name="presentableId" value="Default" />
       <updated>1653766617178</updated>
       <workItem from="1653766623432" duration="2758000" />
+      <workItem from="1653930695190" duration="1628000" />
+      <workItem from="1653950796818" duration="3858000" />
     </task>
     <servers />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
