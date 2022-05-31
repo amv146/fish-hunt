@@ -1891,11 +1891,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
+  observableSearch: 2
   ObservedComponents: []
-  viewIdField: 2
+  sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1330116571
@@ -2000,11 +2000,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
+  observableSearch: 2
   ObservedComponents: []
-  viewIdField: 1
+  sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1344787859
@@ -2034,14 +2034,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344787859}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -3.18, y: -0.64, z: 0.63508296}
+  m_LocalPosition: {x: -3.18, y: -0.95, z: 0.63508296}
   m_LocalScale: {x: 1, y: 25, z: 1}
   m_Children: []
   m_Father: {fileID: 1394498843}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!61 &1344787861
-BoxCollider2D:
+--- !u!70 &1344787861
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2049,23 +2049,13 @@ BoxCollider2D:
   m_GameObject: {fileID: 1344787859}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 86097d118e13abc4ca58a972498ffc27, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.0000002, y: 1.0000002}
-  m_EdgeRadius: 0
+  m_Offset: {x: -1.135253, y: -0.0117076095}
+  m_Size: {x: 3.3076227, y: 0.5305296}
+  m_Direction: 0
 --- !u!23 &1344787862
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2410,6 +2400,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7642078928143542541, guid: 334024c6da5f5354685e9243f0b1d291,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.36689633
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642078928143542541, guid: 334024c6da5f5354685e9243f0b1d291,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.31766558
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642078928143542541, guid: 334024c6da5f5354685e9243f0b1d291,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.022404015
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642078928143542541, guid: 334024c6da5f5354685e9243f0b1d291,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.020007245
+      objectReference: {fileID: 0}
     - target: {fileID: 7642078928143542582, guid: 334024c6da5f5354685e9243f0b1d291,
         type: 3}
       propertyPath: m_Name
@@ -2418,7 +2428,7 @@ PrefabInstance:
     - target: {fileID: 7642078928143542582, guid: 334024c6da5f5354685e9243f0b1d291,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 334024c6da5f5354685e9243f0b1d291, type: 3}

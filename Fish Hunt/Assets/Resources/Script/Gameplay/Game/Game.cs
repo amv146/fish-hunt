@@ -33,12 +33,7 @@ public class Game : MonoBehaviourPunCallbacks
         instance = this;
         myPhotonView = GetComponent<PhotonView>();
         players = new List<Player>();
-    }
-
-    private void Update() {
-        if (timer.IsGameOver()) {
-            HandleWinner();
-        }
+        timer.OnTimerEnd += GameOver;
     }
 
     public override void OnDisable() {
@@ -54,16 +49,12 @@ public class Game : MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) {
         foreach (Player player in players) {
-            HandleUpdates(player);
+            player.UpdateViews();
         }
     }
 
-    private void HandleUpdates(Player player) {
-        if (player.GetLastScoreAdded() != 0) {
-            player.UpdateScoreText();
-        }
-        player.UpdateShotsboard();
-        player.UpdateScoreboard();
+    void GameOver() {
+        photonView.RPC("HandleWinner", RpcTarget.MasterClient);
     }
 
     private void OnShot() {
@@ -77,42 +68,31 @@ public class Game : MonoBehaviourPunCallbacks
 
     
 
-    public void AddPlayer(Player player, string uid) {
+    public void AddPlayer(Player player) {
         players.Add(player);
-        
-        foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) {
-            if (photonPlayer.UserId == (string) uid) {
-                player.player = photonPlayer;
-            }
-        }
-        if (player.player == null) {
-            foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList) {
-                if (photonPlayer.UserId == null) {
-                    player.player = photonPlayer;
-                }
-            }
-        }
         
         player.OnFishShot += OnFishShot;
         player.OnShot += OnShot;
     }
 
+    [PunRPC]
     public void HandleWinner() {
-        PhotonNetwork.AutomaticallySyncScene = false;
-        if (players[1].GetScore() > players[0].GetScore()) {
-            players[1].HandleWinOrLoss(true);
-            players[0].HandleWinOrLoss(false);
-            
+        if (players[1] > players[0]) {
+            players[1].UpdateGameResult(GameResult.Win);
+            players[0].UpdateGameResult(GameResult.Lose);
         }
-        else if (players[0].GetScore() > players[1].GetScore()) {
-            players[0].HandleWinOrLoss(true);
-            players[1].HandleWinOrLoss(false);
+        else if (players[0] > players[1]) {
+            players[0].UpdateGameResult(GameResult.Win);
+            players[1].UpdateGameResult(GameResult.Lose);
         }
         else {
-            players[0].HandleTie();
-            players[1].HandleTie();
+            players[0].UpdateGameResult(GameResult.Tie);
+            players[1].UpdateGameResult(GameResult.Tie);
         }
+        PhotonNetwork.LoadLevel(2);
+
     }
+    
 
     
 

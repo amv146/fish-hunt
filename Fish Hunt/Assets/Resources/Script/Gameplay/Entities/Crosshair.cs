@@ -12,6 +12,7 @@ public class Crosshair : MonoBehaviourPunCallbacks
 {
     private SpriteRenderer crosshairRenderer;
     private PhotonView myPhotonView;
+    private Animator animator;
     public RuntimeAnimatorController opponentAnimationController;
     public Sprite OpponentCrosshair;
     public OnFishTouch OnFishTouch;
@@ -21,6 +22,7 @@ public class Crosshair : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AddCallbackTarget(this);
         this.mainCamera = Camera.main;
+        this.animator = GetComponent<Animator>();
     }
 
     public override void OnDisable()
@@ -37,7 +39,7 @@ public class Crosshair : MonoBehaviourPunCallbacks
         {
             Debug.Log("Crosshair Changed");
             crosshairRenderer.sprite = OpponentCrosshair;
-            GetComponent<Animator>().runtimeAnimatorController = opponentAnimationController;
+            animator.runtimeAnimatorController = opponentAnimationController;
             crosshairRenderer.sprite = OpponentCrosshair;
         }
         InvokeRepeating("HandleInputs", 0, 0.000015f);
@@ -49,6 +51,10 @@ public class Crosshair : MonoBehaviourPunCallbacks
         {
             ConstrainPosition();
         }
+    }
+
+    public void PlayShootAnimation() {
+        animator.Play("P1Crosshair Animation");
     }
 
     private void OnTriggerEnter2D(Collider2D col)

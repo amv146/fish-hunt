@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -1912724706083513195}
   - component: {fileID: -6197689341540747787}
   - component: {fileID: 8438825873486285821}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: FlyingFish
   m_TagString: Fish
   m_Icon: {fileID: 0}
@@ -192,6 +192,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: -1912724706083513195}
   - {fileID: -6197689341540747787}
+  - {fileID: 8438825873486285821}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -207,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
+  m_SynchronizePosition: 0
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
+  m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &8438825873486285821
@@ -242,4 +243,6 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters: []
-  m_SynchronizeLayers: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
