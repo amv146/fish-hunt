@@ -62,13 +62,13 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback {
         if (photonView.IsMine && player.GetBulletsLeft() > 0) {
             OnShot?.Invoke();
             Fish touchingFish = player.GetTouchingFish();
-            player.GetCrosshair().GetComponent<Animator>().Play("P1Crosshair Animation");
+            player.GetCrosshair().PlayShootAnimation();
             if (touchingFish != null) {
                 AwardPoints(touchingFish.isGolden);
                 AddToCombo();
                 ResetBullets();
                 OnFishShot(touchingFish);
-                touchingFish = null;
+                player.SetTouchingFish(null);
             }
             else {
                 DecreaseBullets();

@@ -9,6 +9,7 @@ public class Cat : MonoBehaviourPunCallbacks
     public float speed = 200.0f;
     public float yAxisLimit = -2.0f;
     private PhotonView myPhotonView;
+    
     // Start is called before the first frame update
     void Start()
     {

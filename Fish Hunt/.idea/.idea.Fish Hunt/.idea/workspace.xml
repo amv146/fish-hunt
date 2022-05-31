@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" afterDir="false" />
-    </list>
+    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +73,7 @@
       <updated>1653766617178</updated>
       <workItem from="1653766623432" duration="2758000" />
       <workItem from="1653930695190" duration="1628000" />
-      <workItem from="1653950796818" duration="4287000" />
+      <workItem from="1653950796818" duration="4425000" />
     </task>
     <servers />
   </component>

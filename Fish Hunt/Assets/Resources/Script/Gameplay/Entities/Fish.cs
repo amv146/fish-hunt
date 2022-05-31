@@ -29,16 +29,6 @@ public class Fish : MonoBehaviourPunCallbacks {
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // if (!isDead) {
-        //     Vector2 newVelocity = SetVelocity(rigidBody.velocity);
-        //     rigidBody.velocity = newVelocity;
-        //     FaceDirection();
-        // }
-    }
-
     void FaceDirection()
     {
         Vector2 moveDirection = rigidBody.velocity;
@@ -51,6 +41,7 @@ public class Fish : MonoBehaviourPunCallbacks {
 
     private void ChangeVelocity() {
         Vector2 newVelocity = GetRandomVelocity() * (isGolden ? GOLD_SPEED : 1);
+        rigidBody.velocity = newVelocity;
         FaceDirection();
     }
     
@@ -74,7 +65,9 @@ public class Fish : MonoBehaviourPunCallbacks {
     }
 
     public void Kill() {
-        photonView.RPC("HandleDeath", RpcTarget.All);
+        if (PhotonNetwork.IsMasterClient) {
+            HandleDeath();
+        }
     } 
     
     [PunRPC]
