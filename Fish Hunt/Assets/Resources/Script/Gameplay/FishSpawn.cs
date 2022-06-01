@@ -1,60 +1,86 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
+using JetBrains.Annotations;
+using Random = UnityEngine.Random;
 
 public class FishSpawn : MonoBehaviourPunCallbacks
 {
-    private float time;
-    private float spawnTime;
-    private float spawnPoint;
-    private int goldenChance;
+    private float goldenProb = 0.1f;
+    private Queue<Fish> freeFish = new Queue<Fish>();
+    private string fishPrefabPath = Path.Combine("Prefabs", "Game", "FlyingFish");
     
-    
+    public List<Fish> AllFish = new List<Fish>();
+
+
     public float maxTime = 3;
     public float minTime = 1;
     public float xMin = -10;
     public float xMax = 10;
     public float yFixed = -4;
+    public int maxFish = 7;
     
 
     // Start is called before the first frame update
-    void Start()
-    {
-        SetRandomTime();
-        time = 0;
-    }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        time += Time.deltaTime;
-        if(time >= spawnTime)
-        {
-            Spawn();
-            SetRandomTime();
-            time = 0;
-        } 
-    }
-
-    void Spawn()
-    {
-        goldenChance = Random.Range(1, 21);
-        Vector3 pos = new Vector3(Random.Range(xMin, xMax), yFixed, 0f);
-        if (PhotonNetwork.IsMasterClient && goldenChance == 1)
-        {
-            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Game", "GoldenFlyingFish"), pos, Quaternion.identity);
-        }
-        else if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Game", "FlyingFish"), pos, Quaternion.identity);
+    private void Awake() {
+        Fish.OnFishEaten += FreeFish;
+        if (PhotonNetwork.IsMasterClient) {
+            for (int i = 0; i < maxFish; ++i) {
+                Fish fish = InstantiateNetworkedFish();
+                freeFish.Enqueue(fish);
+                AllFish.Add(fish);
+            }
         }
     }
 
-    void SetRandomTime()
+    void Start() {
+        StartCoroutine(SpawnCycle());
+    }
+
+
+    private IEnumerator SpawnCycle() {
+        float randomTime = GetRandomTime();
+        RespawnFish();
+        yield return new WaitForSeconds(randomTime);
+        
+        
+        
+        StartCoroutine(SpawnCycle());
+    }
+
+    private Fish InstantiateNetworkedFish() {
+        Fish fish = PhotonNetwork.Instantiate(fishPrefabPath, new Vector3(-100f, 0), Quaternion.identity).GetComponent<Fish>();
+        fish.SetGolden(ShouldSetGolden());
+        return fish;
+    }
+    
+    private void RespawnFish() {
+        if (freeFish.Count == 0) {
+            return;
+        }
+        Fish fish = freeFish.Dequeue();
+        fish.transform.position = new Vector3(Random.Range(xMin, xMax), yFixed);
+        fish.Respawn();
+        fish.SetGolden(ShouldSetGolden());
+    }
+    
+    private void FreeFish([NotNull] Fish fish) {
+        freeFish.Enqueue(fish);
+        fish.RPCSetState(FishState.Queued);
+        fish.transform.position = new Vector3(-100, yFixed);
+    }
+    
+    private bool ShouldSetGolden() {
+        return Random.Range(0f, 1f) < goldenProb;
+    }
+
+    float GetRandomTime()
     {
-        spawnTime = Random.Range(minTime, maxTime);
+        return Random.Range(minTime, maxTime);
     }
 }

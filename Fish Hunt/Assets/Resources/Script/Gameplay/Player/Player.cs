@@ -67,7 +67,7 @@ public class Player : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback {
                 AwardPoints(touchingFish.isGolden);
                 AddToCombo();
                 ResetBullets();
-                OnFishShot(touchingFish);
+                OnFishShot.Invoke(touchingFish);
                 player.SetTouchingFish(null);
             }
             else {

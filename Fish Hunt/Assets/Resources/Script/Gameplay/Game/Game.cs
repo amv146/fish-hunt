@@ -24,7 +24,16 @@ public class Game : MonoBehaviourPunCallbacks
     private PhotonView myPhotonView;
     private List<Player> players;
     private AudioSource audioSource;
-
+    
+    [SerializeField]
+    private RuntimeAnimatorController fishAnimatorController;
+    [SerializeField]
+    private RuntimeAnimatorController goldenFishAnimatorController;
+    [SerializeField]
+    private Sprite fishSprite;
+    [SerializeField]
+    private Sprite goldenFishSprite;
+    
     // Start is called before the first frame update
     void Awake() {
         PhotonNetwork.AddCallbackTarget(this);
@@ -34,7 +43,10 @@ public class Game : MonoBehaviourPunCallbacks
         myPhotonView = GetComponent<PhotonView>();
         players = new List<Player>();
         timer.OnTimerEnd += GameOver;
+        Fish.FishAnimatorController = fishAnimatorController;
+        Fish.GoldenFishAnimatorController = goldenFishAnimatorController;
     }
+
 
     public override void OnDisable() {
         PhotonNetwork.RemoveCallbackTarget(this);

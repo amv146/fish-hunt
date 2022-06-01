@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="" />
+    <list default="true" id="ada640ec-a717-4dc3-88d2-a54a2a1be984" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish Hunt/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish Hunt/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Photon/PhotonUnityNetworking/Resources/PhotonServerSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/FlyingFish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/FlyingFish.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/GoldenFlyingFish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Prefabs/Game/GoldenFlyingFish.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Scenes/Game.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Cat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Cat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Crosshair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Crosshair.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Fish.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Entities/Fish.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/FishSpawn.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/FishSpawn.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Game/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Script/Gameplay/Player/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,6 +88,11 @@
       <workItem from="1653766623432" duration="2758000" />
       <workItem from="1653930695190" duration="1628000" />
       <workItem from="1653950796818" duration="4425000" />
+      <workItem from="1653955723828" duration="5767000" />
+      <workItem from="1653970306287" duration="288000" />
+      <workItem from="1654023946982" duration="3251000" />
+      <workItem from="1654038746559" duration="4016000" />
+      <workItem from="1654125021602" duration="1758000" />
     </task>
     <servers />
   </component>
