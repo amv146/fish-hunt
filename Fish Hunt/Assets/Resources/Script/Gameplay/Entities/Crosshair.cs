@@ -40,17 +40,19 @@ public class Crosshair : MonoBehaviourPunCallbacks
             Debug.Log("Crosshair Changed");
             crosshairRenderer.sprite = OpponentCrosshair;
             animator.runtimeAnimatorController = opponentAnimationController;
-            crosshairRenderer.sprite = OpponentCrosshair;
         }
-        InvokeRepeating("HandleInputs", 0, 0.000015f);
     }
 
-    private void HandleInputs()
-    {
+    private void Update() {
         if (myPhotonView.IsMine)
         {
             ConstrainPosition();
         }
+    }
+
+    private void HandleInputs()
+    {
+        
     }
 
     public void PlayShootAnimation() {
@@ -59,15 +61,9 @@ public class Crosshair : MonoBehaviourPunCallbacks
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!photonView.IsMine)
-        {
-            crosshairRenderer.sprite = OpponentCrosshair;
-            return;
-        }
         if (col.TryGetComponent<Fish>(out Fish fish))
         {
-            print(fish);
-            if (!fish.isDead)
+            if (fish.GetState() == FishState.Alive)
             {
                 OnFishTouch?.Invoke(fish);
                 return;

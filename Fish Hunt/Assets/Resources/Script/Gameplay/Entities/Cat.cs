@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -38,19 +39,17 @@ public class Cat : MonoBehaviourPunCallbacks
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<Fish>(out Fish fish)) {
-            if (fish.isDead) {
-                myPhotonView.RPC("RPC_DestroyFish", RpcTarget.MasterClient, fish.photonView.ViewID);
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (!PhotonNetwork.IsMasterClient) {
+            return;
+        }
+        if (col.gameObject.TryGetComponent<Fish>(out Fish fish)) {
+            if (fish.GetState() == FishState.Dead) {
+                Fish.OnFishEaten(fish);
             }
         }
     }
 
-    [PunRPC]
-    void RPC_DestroyFish(int viewID) {
-        PhotonNetwork.Destroy(PhotonView.Find(viewID).gameObject);
-    }
 
     bool GetDeadFish(out GameObject[] deadFish) {
         GameObject[] fish = GameObject.FindGameObjectsWithTag("Fish");
@@ -59,13 +58,13 @@ public class Cat : MonoBehaviourPunCallbacks
         List<GameObject> tempDeadFish = new List<GameObject>();
 
         foreach (GameObject tempGoldenFish in goldenFish) {
-            if (tempGoldenFish.GetComponent<Fish>().isDead) {
+            if (tempGoldenFish.GetComponent<Fish>().GetState() == FishState.Dead) {
                 tempDeadFish.Add(tempGoldenFish);
             }
         }
 
         foreach (GameObject tempFish in fish) {
-            if (tempFish.GetComponent<Fish>().isDead) {
+            if (tempFish.GetComponent<Fish>().GetState() == FishState.Dead) {
                 tempDeadFish.Add(tempFish);
             }
         }

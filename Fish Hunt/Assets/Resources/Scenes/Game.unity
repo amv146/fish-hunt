@@ -165,7 +165,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 67232156}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 86097d118e13abc4ca58a972498ffc27, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1717,7 +1717,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1300085382}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 86097d118e13abc4ca58a972498ffc27, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1933,6 +1933,14 @@ MonoBehaviour:
   timer: {fileID: 1328810149}
   GunshotSFX: {fileID: 8300000, guid: 0d9dcc4e129334e76a0d735e1d65598c, type: 3}
   FishDeathSFX: {fileID: 8300000, guid: 5a107553dc28946afb19cf7ca9fb658b, type: 3}
+  fishAnimatorController: {fileID: 9100000, guid: fa7b3906da96afb458d8245b50ebfdf5,
+    type: 2}
+  goldenFishAnimatorController: {fileID: 9100000, guid: de5ef70b8861c5441a8c4b7289cd9f7d,
+    type: 2}
+  fishSprite: {fileID: -811530239596201362, guid: b4b8488a4152be8418aedcba6a05b6e4,
+    type: 3}
+  goldenFishSprite: {fileID: 2021572705477230959, guid: ab57bdfd518590c459674361be9cee7b,
+    type: 3}
 --- !u!4 &1330116573
 Transform:
   m_ObjectHideFlags: 0
@@ -1977,14 +1985,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcdf45dac4bd46e98f19e681f1295a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fish: {fileID: 6205223281701198144, guid: 8e06adb28b8c4c44093776066888ef41, type: 3}
-  goldenFish: {fileID: 5313625302924866721, guid: 01ff3ce8a553cd2488169292efd120ea,
-    type: 3}
+  AllFish: []
   maxTime: 3
   minTime: 2
   xMin: -6
   xMax: 6
   yFixed: -1
+  maxFish: 1
 --- !u!114 &1330116576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2180,7 +2187,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1464406298}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 86097d118e13abc4ca58a972498ffc27, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2419,6 +2426,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Offset.y
       value: 0.020007245
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642078928143542541, guid: 334024c6da5f5354685e9243f0b1d291,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7642078928143542582, guid: 334024c6da5f5354685e9243f0b1d291,
         type: 3}
